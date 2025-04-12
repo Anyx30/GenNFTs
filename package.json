@@ -1,0 +1,55 @@
+{
+  "name": "foundry_hardhat_template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    
+    "deploy:eth": "hardhat run scripts/deploy.ts --network mainnet",
+    "deploy:eth-test": "hardhat run scripts/deploy.ts --network sepolia",
+    
+    "deploy:polygon": "hardhat run scripts/deploy.ts --network polygon",
+    "deploy:polygon-test": "hardhat run scripts/deploy.ts --network mumbai",
+    
+    "deploy:base": "hardhat run scripts/deploy.ts --network base",
+    "deploy:base-test": "hardhat run scripts/deploy.ts --network base-sepolia",
+    
+    "deploy:arb": "hardhat run scripts/deploy.ts --network arbitrum",
+    "deploy:arb-test": "hardhat run scripts/deploy.ts --network arbitrum-sepolia",
+    
+    "verify:eth": "hardhat verify --network mainnet",
+    "verify:eth-test": "hardhat verify --network sepolia",
+    "verify:polygon": "hardhat verify --network polygon",
+    "verify:polygon-test": "hardhat verify --network mumbai",
+    "verify:base": "hardhat verify --network base",
+    "verify:base-test": "hardhat verify --network base-sepolia",
+    "verify:arb": "hardhat verify --network arbitrum",
+    "verify:arb-test": "hardhat verify --network arbitrum-sepolia"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xArchitect/foundry_hardhat_template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/0xArchitect/foundry_hardhat_template/issues"
+  },
+  "homepage": "https://github.com/0xArchitect/foundry_hardhat_template#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-foundry": "^1.1.3",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "@openzeppelin/contracts": "^5.2.0",
+    "@openzeppelin/hardhat-upgrades": "^3.9.0",
+    "dotenv": "^16.4.7",
+    "hardhat": "^2.22.19",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.14"
+  }
+}
