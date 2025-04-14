@@ -1,0 +1,19 @@
+{
+  "name": "METABORONG #10",
+  "description": "A unique digital artwork from the METABORONG collection",
+  "image": "https://ipfs.io/ipfs/bafybeicmvgwofwf5rz2kpklrulhlxqntltmmilvlx6v46squr46nr2y5j4/10.jpg",
+  "attributes": [
+    {
+      "trait_type": "Collection",
+      "value": "METABORONG"
+    },
+    {
+      "trait_type": "Type",
+      "value": "GHIBLI_ART_NFT"
+    },
+    {
+      "trait_type": "Role",
+      "value": "Developer"
+    }
+  ]
+}
