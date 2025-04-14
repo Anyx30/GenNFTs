@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
+
 abstract contract IPFSnftsEvents {
     event NftMinted(address indexed owner, uint256 tokenId);
     event NFTRequested(uint256 indexed requestId, address indexed requester);

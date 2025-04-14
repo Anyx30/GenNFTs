@@ -8,4 +8,4 @@ abstract contract IPFSnftsErrors {
     error IPFSnfts__InvalidTokenId();
     error IPFSnfts__VRFRequestFailed();
     error IPFSnfts__WithdrawalFailed();
-}   
+}

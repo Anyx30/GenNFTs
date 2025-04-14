@@ -10,12 +10,7 @@ import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFCo
 import {IVRFCoordinatorV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
-contract IPFSnfts is ERC721URIStorage,
-    VRFConsumerBaseV2Plus,  
-    IPFSnftsErrors,
-    IPFSnftsEvents,
-    ReentrancyGuard {
-
+contract IPFSnfts is ERC721URIStorage, VRFConsumerBaseV2Plus, IPFSnftsErrors, IPFSnftsEvents, ReentrancyGuard {
     // Chainlink VRF variables
     IVRFCoordinatorV2Plus private vrfCoordinator;
     bytes32 private keyHash;
@@ -34,11 +29,10 @@ contract IPFSnfts is ERC721URIStorage,
     mapping(uint256 => uint256) public requestToTokenId;
     mapping(uint256 => bool) public tokenIDMinted;
 
-    constructor(address _vrfCoordinatorV2,
-        bytes32 _keyHash)
-            ERC721("METABORONG", "MB")
-            VRFConsumerBaseV2Plus(_vrfCoordinatorV2) {
-
+    constructor(address _vrfCoordinatorV2, bytes32 _keyHash)
+        ERC721("METABORONG", "MB")
+        VRFConsumerBaseV2Plus(_vrfCoordinatorV2)
+    {
         vrfCoordinator = IVRFCoordinatorV2Plus(_vrfCoordinatorV2);
         keyHash = _keyHash;
         s_baseURI = "https://ipfs.io/ipfs/bafybeicmvgwofwf5rz2kpklrulhlxqntltmmilvlx6v46squr46nr2y5j4";
@@ -55,13 +49,9 @@ contract IPFSnfts is ERC721URIStorage,
                 requestConfirmations: REQUEST_CONFIRMATIONS,
                 callbackGasLimit: callbackGasLimit,
                 numWords: NUM_WORDS,
-                extraArgs: VRFV2PlusClient._argsToBytes(
-                    VRFV2PlusClient.ExtraArgsV1({
-                        nativePayment: false
-                    })
-                )
-            }) 
-        );  
+                extraArgs: VRFV2PlusClient._argsToBytes(VRFV2PlusClient.ExtraArgsV1({nativePayment: false}))
+            })
+        );
 
         if (requestId == 0) {
             emit VRFRequestFailed(requestId, msg.sender);
@@ -77,10 +67,10 @@ contract IPFSnfts is ERC721URIStorage,
     function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) internal override {
         address nftOwner = requestToSender[requestId];
         uint256 selectedTokenId = selectRandomAvailableToken(randomWords[0]);
-        
+
         tokenIDMinted[selectedTokenId] = true;
         _safeMint(nftOwner, selectedTokenId);
-        
+
         delete requestToSender[requestId];
         emit NftMinted(nftOwner, selectedTokenId);
     }
@@ -88,7 +78,7 @@ contract IPFSnfts is ERC721URIStorage,
     function selectRandomAvailableToken(uint256 randomness) internal view returns (uint256) {
         // Returns 1-19
         uint256 randomIndex = (randomness % MAX_SUPPLY) + 1;
-        
+
         if (tokenIDMinted[randomIndex]) {
             // Search in order from randomIndex to end, then from start to randomIndex
             for (uint256 i = 1; i <= MAX_SUPPLY; i++) {
@@ -105,7 +95,7 @@ contract IPFSnfts is ERC721URIStorage,
     // Override tokenURI function to return IPFS URI
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         if (tokenId < 1 || tokenId > MAX_SUPPLY) revert IPFSnfts__InvalidTokenId();
-        return string(abi.encodePacked(s_baseURI, '/', Strings.toString(tokenId), '.json'));
+        return string(abi.encodePacked(s_baseURI, "/", Strings.toString(tokenId), ".json"));
     }
 
     function setSubscriptionId(uint256 newSubscriptionId) external onlyOwner {
@@ -115,7 +105,7 @@ contract IPFSnfts is ERC721URIStorage,
     // Withdraw funds
     function withdraw() external onlyOwner nonReentrant {
         uint256 balance = address(this).balance;
-        (bool success, ) = payable(owner()).call{value: balance}("");
+        (bool success,) = payable(owner()).call{value: balance}("");
         if (!success) revert IPFSnfts__WithdrawalFailed();
         emit Withdrawal(owner(), balance);
     }
@@ -124,5 +114,4 @@ contract IPFSnfts is ERC721URIStorage,
         s_baseURI = newBaseURI;
         emit BaseURIUpdated(newBaseURI);
     }
-
 }
